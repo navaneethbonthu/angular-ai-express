@@ -1,0 +1,95 @@
+.login-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: #f4f7f6;
+
+    .login-card {
+        background: white;
+        padding: 2.5rem;
+        border-radius: 12px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+        width: 100%;
+        max-width: 400px;
+
+        h1 {
+            margin-bottom: 0.5rem;
+            font-size: 1.8rem;
+            color: #333;
+        }
+
+        .subtitle {
+            color: #666;
+            margin-bottom: 2rem;
+        }
+
+        .form-field {
+            margin-bottom: 1.5rem;
+            display: flex;
+            flex-direction: column;
+
+            label {
+                margin-bottom: 0.5rem;
+                font-weight: 500;
+                color: #444;
+            }
+
+            input {
+                padding: 0.8rem;
+                border: 1px solid #ddd;
+                border-radius: 6px;
+                font-size: 1rem;
+
+                &:focus {
+                    outline: none;
+                    border-color: #007bff;
+                }
+            }
+        }
+
+        .error-banner {
+            background: #fff1f0;
+            border: 1px solid #ffa39e;
+            padding: 0.8rem;
+            color: #cf1322;
+            border-radius: 6px;
+            margin-bottom: 1.5rem;
+            font-size: 0.9rem;
+        }
+
+        .btn-primary {
+            width: 100%;
+            padding: 0.8rem;
+            background: #007bff;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
+
+            &:hover {
+                background: #0056b3;
+            }
+
+            &:disabled {
+                background: #ccc;
+                cursor: not-allowed;
+            }
+        }
+
+        .footer-text {
+            margin-top: 1.5rem;
+            text-align: center;
+            font-size: 0.9rem;
+
+            a {
+                color: #007bff;
+                text-decoration: none;
+                font-weight: 600;
+            }
+        }
+    }
+}

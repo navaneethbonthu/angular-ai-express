@@ -1,0 +1,35 @@
+<div class="login-container">
+    <form class="login-card" (submit)="$event.preventDefault(); handleLogin()">
+        <h1>Welcome Back</h1>
+        <p class="subtitle">Sign in to manage your inventory</p>
+
+        <div class="form-field">
+            <label for="email">Email Address</label>
+            <input type="email" id="email" placeholder="you@example.com" [(ngModel)]="email" name="email" required />
+        </div>
+
+        <div class="form-field">
+            <label for="password">Password</label>
+            <input type="password" id="password" placeholder="••••••••" [(ngModel)]="password" name="password"
+                required />
+        </div>
+
+        @if (errorMessage()) {
+        <div class="error-banner">
+            {{ errorMessage() }}
+        </div>
+        }
+
+        <button type="submit" [disabled]="isLoading()" class="btn-primary">
+            @if (isLoading()) {
+            Logging in...
+            } @else {
+            Sign In
+            }
+        </button>
+
+        <p class="footer-text">
+            Don't have an account? <a routerLink="/auth/signup">Sign up</a>
+        </p>
+    </form>
+</div>
