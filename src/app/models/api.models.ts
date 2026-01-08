@@ -49,3 +49,18 @@ export interface PaginatedResponse<T> {
     itemsPerPage: number;
   };
 }
+
+export interface Order {
+  id: string;
+  userId: string;
+  productId: string;
+  quantity: number;
+  totalPrice: number;
+  status: string;
+  createdAt: string;
+  updatedAt: string;
+
+  // Relations (Optional: only populated if you use 'include' in Prisma)
+  user?: User;
+  product?: Product;
+}

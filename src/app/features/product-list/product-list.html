@@ -1,0 +1,65 @@
+<div class="product-list-container">
+    <header class="page-header">
+        <h1 id="product-list-heading">Product Catalog</h1>
+        <p>Browse and manage our selection of available items.</p>
+    </header>
+
+    <!-- Search and Controls Area -->
+    <div class="controls-bar">
+        <div class="search-and-filter">
+            <!-- Search -->
+            <label for="search-input" class="visually-hidden">Search products by name or description</label>
+            <input id="search-input" type="search" [formControl]="searchControl" placeholder="Search products..."
+                aria-controls="product-grid">
+
+            <!-- Category Filter -->
+            <label for="category-filter" class="visually-hidden">Filter by Category</label>
+            <select id="category-filter" (change)="onCategoryChange($event)" aria-controls="product-grid">
+                <option value="">All Categories</option>
+                @for (category of productService.categories(); track category.id) {
+                <option [value]="category.id">{{ category.name }}</option>
+                }
+            </select>
+        </div>
+    </div>
+
+    <!-- Loading State -->
+    @if (productService.isLoading()) {
+    <div class="status-message loading-indicator" role="status" aria-live="polite">
+        Loading products...
+    </div>
+    }
+    <!-- Empty State -->
+    @else if (productService.products().length === 0) {
+    <div class="status-message no-results" role="status">
+        No products match your criteria.
+    </div>
+    }
+    <!-- Product Grid -->
+    <div class="product-grid" role="list" aria-labelledby="product-list-heading">
+        @for (prod of productService.products(); track prod.id; let i = $index) {
+        <div role="listitem" class="product-item-wrapper">
+            <app-product-card [product]="prod" (addToCart)="handleAddToCart($event)" />
+        </div>
+        }
+    </div>
+
+    <!-- Pagination Controls -->
+    @if (productService.products().length > 0) {
+    <nav class="pagination-controls" aria-label="Product pagination">
+        <button (click)="onPageChange(currentPage() - 1)" [disabled]="currentPage() === 1"
+            aria-label="Go to previous page" class="pagination-button">
+            &larr; Previous
+        </button>
+
+        <span class="current-page-info" role="status" aria-live="polite">
+            Page {{ currentPage() }} of {{ totalPages() }} ({{ totalItems() }} items)
+        </span>
+
+        <button (click)="onPageChange(currentPage() + 1)" [disabled]="currentPage() >= totalPages()"
+            aria-label="Go to next page" class="pagination-button">
+            Next &rarr;
+        </button>
+    </nav>
+    }
+</div>

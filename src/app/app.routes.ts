@@ -3,7 +3,12 @@ import { Routes } from '@angular/router';
 export const routes: Routes = [
   {
     path: 'login',
-    loadComponent: () => import('./features/auth/login/login.component'), // Simplified thanks to 'export default'
+    loadComponent: () => import('./features/auth/login/login.component'),
   },
-  { path: '', redirectTo: 'login', pathMatch: 'full' },
+  {
+    path: 'products',
+    // lazy load the product list
+    loadComponent: () => import('./features/product-list/product-list'),
+  },
+  { path: '', redirectTo: 'products', pathMatch: 'full' },
 ];
