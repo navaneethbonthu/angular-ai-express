@@ -1,16 +1,198 @@
-.container {
-    padding: 2rem;
-    max-width: 1200px;
-    margin: 0 auto;
+.product-list-container {
+  padding: 2rem 1rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  min-height: 100vh;
 
-    header {
-        margin-bottom: 3rem;
-        text-align: center;
+  .page-header {
+    margin-bottom: 2.5rem;
+    text-align: center;
+
+    h1 {
+      font-size: 2.5rem;
+      color: #2c3e50;
+      margin-bottom: 0.5rem;
+      font-weight: 800;
     }
 
-    .product-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-        gap: 2rem;
+    p {
+      color: #7f8c8d;
+      font-size: 1.1rem;
     }
+  }
+
+  .controls-bar {
+    background: white;
+    padding: 1.5rem;
+    border-radius: 12px;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05);
+    margin-bottom: 2rem;
+    position: sticky;
+    top: 1rem;
+    z-index: 10;
+
+    .search-and-filter {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+
+      input[type="search"] {
+        flex: 1;
+        min-width: 250px;
+        padding: 0.75rem 1rem;
+        border: 2px solid #edf2f7;
+        border-radius: 8px;
+        font-size: 1rem;
+        transition: all 0.2s;
+
+        &:focus {
+          outline: none;
+          border-color: var(--color-primary, #3f51b5);
+          box-shadow: 0 0 0 3px rgba(63, 81, 181, 0.1);
+        }
+      }
+
+      select {
+        padding: 0.75rem 2rem 0.75rem 1rem;
+        border: 2px solid #edf2f7;
+        border-radius: 8px;
+        font-size: 1rem;
+        background-color: white;
+        cursor: pointer;
+        min-width: 180px;
+        appearance: none;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%234a5568'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        background-position: right 0.75rem center;
+        background-size: 1.25rem;
+
+        &:focus {
+          outline: none;
+          border-color: var(--color-primary, #3f51b5);
+        }
+      }
+    }
+  }
+
+  .status-message {
+    text-align: center;
+    padding: 4rem 2rem;
+    background: #f8fafc;
+    border-radius: 12px;
+    border: 2px dashed #e2e8f0;
+    color: #64748b;
+    font-size: 1.1rem;
+    margin: 2rem 0;
+
+    &.loading-indicator {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1rem;
+
+      &::before {
+        content: "";
+        width: 40px;
+        height: 40px;
+        border: 4px solid #e2e8f0;
+        border-top-color: var(--color-primary, #3f51b5);
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+      }
+    }
+  }
+
+  .product-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 2rem;
+    margin-bottom: 3rem;
+  }
+
+  .pagination-controls {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 2rem;
+    padding: 2rem 0;
+    border-top: 1px solid #edf2f7;
+
+    .current-page-info {
+      font-weight: 600;
+      color: #4a5568;
+    }
+
+    .pagination-button {
+      padding: 0.6rem 1.5rem;
+      border-radius: 8px;
+      border: 1px solid #e2e8f0;
+      background: white;
+      color: #4a5568;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+
+      &:hover:not(:disabled) {
+        background: #f8fafc;
+        border-color: #cbd5e1;
+        transform: translateY(-1px);
+      }
+
+      &:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+      }
+
+      &:active:not(:disabled) {
+        transform: translateY(0);
+      }
+    }
+  }
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+@media (max-width: 640px) {
+  .product-list-container {
+    padding: 1rem;
+
+    .page-header h1 {
+      font-size: 2rem;
+    }
+
+    .controls-bar {
+      padding: 1rem;
+
+      .search-and-filter {
+        flex-direction: column;
+
+        input[type="search"],
+        select {
+          width: 100%;
+        }
+      }
+    }
+
+    .pagination-controls {
+      flex-direction: column;
+      gap: 1rem;
+      text-align: center;
+    }
+  }
 }

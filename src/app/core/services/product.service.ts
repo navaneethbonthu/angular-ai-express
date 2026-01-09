@@ -2,9 +2,13 @@ import { Injectable, inject, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
 import { tap, finalize, Observable } from 'rxjs';
-import { Product, PaginatedResponse } from '../../models/api.models';
-
-import { Category } from '../../models/api.models';
+import {
+  Product,
+  PaginatedResponse,
+  Category,
+  CreateProductRequest,
+  CreateCategoryRequest,
+} from '../../models/api.models';
 
 @Injectable({ providedIn: 'root' })
 export class ProductService {
@@ -23,10 +27,12 @@ export class ProductService {
   // New Signal for Categories (for the dropdown)
   categories = signal<Category[]>([]);
 
-  // Updated to include categoryId
   loadProducts(page = 1, limit = 10, search = '', categoryId?: string) {
     this.isLoading.set(true);
-    let url = `${this.apiUrl}?page=${page}&limit=${limit}&search=${search}`;
+    let url = `${this.apiUrl}?page=${page}&limit=${limit}`;
+    if (search) {
+      url += `&search=${encodeURIComponent(search)}`;
+    }
     if (categoryId) {
       url += `&categoryId=${categoryId}`;
     }
@@ -49,7 +55,33 @@ export class ProductService {
     return this.http.get<Category[]>(this.catUrl).pipe(tap((cats) => this.categories.set(cats)));
   }
 
+  createCategory(data: CreateCategoryRequest): Observable<Category> {
+    return this.http.post<Category>(this.catUrl, data).pipe(
+      tap((newCat) => {
+        this.categories.update((cats) => [...cats, newCat]);
+      })
+    );
+  }
+
   getProductById(id: string): Observable<Product> {
     return this.http.get<Product>(`${this.apiUrl}/${id}`);
+  }
+
+  createProduct(data: CreateProductRequest): Observable<Product> {
+    return this.http.post<Product>(this.apiUrl, data).pipe(
+      tap(() => {
+        // Reload products or update local state
+        this.loadProducts(this.currentPage(), this.itemsPerPage()).subscribe();
+      })
+    );
+  }
+
+  deleteProduct(id: string): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/${id}`).pipe(
+      tap(() => {
+        this.products.update((prev) => prev.filter((p) => p.id !== id));
+        this.totalItems.update((total) => total - 1);
+      })
+    );
   }
 }

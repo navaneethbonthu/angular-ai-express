@@ -1,23 +1,22 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  inject,
-  OnInit,
-  signal,
-  effect,
-  computed,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, OnInit, signal, effect } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
-import { toObservable } from '@angular/core/rxjs-interop';
-import { debounceTime, filter, startWith, switchMap } from 'rxjs';
 import { ProductCardComponent } from '../../shared/components/product-card/product-card';
 import { ProductService } from '../../core/services/product.service';
 import { Product } from '../../models/api.models';
+import { debounceTime, distinctUntilChanged } from 'rxjs';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { CategoryManagerComponent } from '../category-manager/category-manager.component';
+import { ProductFormComponent } from './product-form.component';
 
 @Component({
   selector: 'app-product-list',
   standalone: true,
-  imports: [ProductCardComponent, ReactiveFormsModule],
+  imports: [
+    ProductCardComponent,
+    ReactiveFormsModule,
+    CategoryManagerComponent,
+    ProductFormComponent,
+  ],
   templateUrl: './product-list.html',
   styleUrl: './product-list.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -29,13 +28,20 @@ export default class ProductListComponent implements OnInit {
   searchControl = new FormControl('');
   selectedCategory = signal<string | undefined>(undefined);
   currentPage = signal<number>(1);
-  itemsPerPage = this.productService.itemsPerPage; // Use service's signal
+  itemsPerPage = this.productService.itemsPerPage;
 
   // Computed state for pagination controls
   totalPages = this.productService.totalPages;
   totalItems = this.productService.totalItems;
 
   constructor() {
+    // Handle search input debouncing
+    this.searchControl.valueChanges
+      .pipe(debounceTime(400), distinctUntilChanged(), takeUntilDestroyed())
+      .subscribe(() => {
+        this.currentPage.set(1);
+      });
+
     // Effect to react to filter/pagination changes
     effect(() => {
       const search = this.searchControl.value ?? '';
@@ -55,6 +61,12 @@ export default class ProductListComponent implements OnInit {
   handleAddToCart(product: Product) {
     console.log('Adding to cart:', product.name);
     // TODO: Implement cart service logic here
+  }
+
+  handleDeleteProduct(id: string) {
+    if (confirm('Are you sure you want to delete this product?')) {
+      this.productService.deleteProduct(id).subscribe();
+    }
   }
 
   // Event handlers

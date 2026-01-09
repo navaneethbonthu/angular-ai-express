@@ -14,6 +14,10 @@ export interface Category {
   };
 }
 
+export interface CreateCategoryRequest {
+  name: string;
+}
+
 // 3. Product Model (Matches your Prisma Product table)
 export interface Product {
   id: string;
@@ -25,6 +29,14 @@ export interface Product {
   userId: string;
   category?: Category; // Nested relationship
   user?: User; // Nested relationship
+}
+
+export interface CreateProductRequest {
+  name: string;
+  price: number;
+  description?: string;
+  imageUrl?: string;
+  categoryId: string;
 }
 
 // 4. Auth Request

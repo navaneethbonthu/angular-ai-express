@@ -4,6 +4,11 @@
         <p>Browse and manage our selection of available items.</p>
     </header>
 
+    <div class="management-section">
+        <app-category-manager />
+        <app-product-form />
+    </div>
+
     <!-- Search and Controls Area -->
     <div class="controls-bar">
         <div class="search-and-filter">
@@ -39,7 +44,8 @@
     <div class="product-grid" role="list" aria-labelledby="product-list-heading">
         @for (prod of productService.products(); track prod.id; let i = $index) {
         <div role="listitem" class="product-item-wrapper">
-            <app-product-card [product]="prod" (addToCart)="handleAddToCart($event)" />
+            <app-product-card [product]="prod" (addToCart)="handleAddToCart($event)"
+                (delete)="handleDeleteProduct($event)" />
         </div>
         }
     </div>

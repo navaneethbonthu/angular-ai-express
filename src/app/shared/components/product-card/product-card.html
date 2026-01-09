@@ -1,1 +1,26 @@
-<p>product-card works!</p>
+<div class="card" [routerLink]="['/products', product().id]">
+    <!-- Use NgOptimizedImage for better performance -->
+    <div class="image-container">
+        @if (product().imageUrl) {
+        <img [ngSrc]="imageUrlPrefix + product().imageUrl" [alt]="product().name" width="300" height="200" priority />
+        } @else {
+        <div class="placeholder-image">No Image</div>
+        }
+    </div>
+    <div class="content">
+        <span class="category">{{ product().category?.name || 'Uncategorized' }}</span>
+        <h3 class="product-name">{{ product().name }}</h3>
+        <p class="description">{{ product().description }}</p>
+        <div class="footer">
+            <span class="price">{{ product().price | currency }}</span>
+            <button class="add-to-cart-btn" (click)="$event.stopPropagation(); addToCart.emit(product())"
+                aria-label="Add to cart">
+                Add to Cart
+            </button>
+            <button class="delete-btn" (click)="$event.stopPropagation(); delete.emit(product().id)"
+                aria-label="Delete product">
+                Delete
+            </button>
+        </div>
+    </div>
+</div>
