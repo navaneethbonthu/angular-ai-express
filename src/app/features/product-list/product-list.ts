@@ -1,4 +1,12 @@
-import { ChangeDetectionStrategy, Component, inject, OnInit, signal, effect } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  inject,
+  OnInit,
+  signal,
+  effect,
+  viewChild,
+} from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { ProductCardComponent } from '../../shared/components/product-card/product-card';
 import { ProductService } from '../../core/services/product.service';
@@ -7,6 +15,7 @@ import { debounceTime, distinctUntilChanged } from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { CategoryManagerComponent } from '../category-manager/category-manager.component';
 import { ProductFormComponent } from './product-form.component';
+import { ModalComponent } from '../../shared/components/modal/modal.component';
 
 @Component({
   selector: 'app-product-list',
@@ -16,6 +25,7 @@ import { ProductFormComponent } from './product-form.component';
     ReactiveFormsModule,
     CategoryManagerComponent,
     ProductFormComponent,
+    ModalComponent,
   ],
   templateUrl: './product-list.html',
   styleUrl: './product-list.scss',
@@ -23,6 +33,8 @@ import { ProductFormComponent } from './product-form.component';
 })
 export default class ProductListComponent implements OnInit {
   productService = inject(ProductService);
+  productModal = viewChild<ModalComponent>('productModal');
+  categoryModal = viewChild<ModalComponent>('categoryModal');
 
   // State for filtering and pagination
   searchControl = new FormControl('');
@@ -81,5 +93,21 @@ export default class ProductListComponent implements OnInit {
     if (page >= 1 && page <= this.totalPages()) {
       this.currentPage.set(page);
     }
+  }
+
+  openProductModal() {
+    this.productModal()?.open();
+  }
+
+  openCategoryModal() {
+    this.categoryModal()?.open();
+  }
+
+  onProductCreated() {
+    this.productModal()?.close();
+  }
+
+  onCategoryAdded() {
+    this.categoryModal()?.close();
   }
 }

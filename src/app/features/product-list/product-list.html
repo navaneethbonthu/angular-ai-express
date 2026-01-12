@@ -4,13 +4,12 @@
         <p>Browse and manage our selection of available items.</p>
     </header>
 
-    <div class="management-section">
-        <app-category-manager />
-        <app-product-form />
-    </div>
-
     <!-- Search and Controls Area -->
     <div class="controls-bar">
+        <div class="actions-group">
+            <button class="action-btn primary" (click)="openProductModal()">+ Add Product</button>
+            <button class="action-btn secondary" (click)="openCategoryModal()">Manage Categories</button>
+        </div>
         <div class="search-and-filter">
             <!-- Search -->
             <label for="search-input" class="visually-hidden">Search products by name or description</label>
@@ -69,3 +68,13 @@
     </nav>
     }
 </div>
+
+<app-modal #productModal>
+    <h2 header>Add New Product</h2>
+    <app-product-form (productCreated)="onProductCreated()" />
+</app-modal>
+
+<app-modal #categoryModal>
+    <h2 header>Manage Categories</h2>
+    <app-category-manager (categoryAdded)="onCategoryAdded()" />
+</app-modal>

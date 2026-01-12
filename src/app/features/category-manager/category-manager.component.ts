@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, OnInit, output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
 import { CategoryService } from '../../core/services/category.service';
@@ -8,8 +8,6 @@ import { CategoryService } from '../../core/services/category.service';
   imports: [CommonModule, ReactiveFormsModule],
   template: `
     <section class="category-manager" aria-labelledby="cat-title">
-      <h2 id="cat-title">Manage Categories</h2>
-
       <form [formGroup]="categoryForm" (ngSubmit)="onSubmit()" class="category-form">
         <div class="form-field">
           <label for="categoryName">New Category Name</label>
@@ -30,15 +28,15 @@ import { CategoryService } from '../../core/services/category.service';
       </form>
 
       <div class="category-list">
-        <h3>Existing Categories</h3>
+        <h3 id="cat-title">Existing Categories</h3>
         @if (categoryService.categories().length === 0) {
-        <p>No categories found.</p>
+        <p class="empty-state">No categories found.</p>
         } @else {
         <ul>
           @for (cat of categoryService.categories(); track cat.id) {
           <li>
-            <span>{{ cat.name }}</span>
-            <span class="count">({{ cat._count?.products || 0 }} products)</span>
+            <span class="cat-name">{{ cat.name }}</span>
+            <span class="count">{{ cat._count?.products || 0 }} products</span>
           </li>
           }
         </ul>
@@ -46,103 +44,13 @@ import { CategoryService } from '../../core/services/category.service';
       </div>
     </section>
   `,
-  styles: [
-    `
-      .category-manager {
-        padding: 1.5rem;
-        background: #fff;
-        border-radius: 8px;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        margin-bottom: 2rem;
-      }
-
-      h2 {
-        margin-bottom: 1rem;
-        color: #333;
-      }
-
-      .category-form {
-        display: flex;
-        gap: 1rem;
-        align-items: flex-end;
-        margin-bottom: 2rem;
-        flex-wrap: wrap;
-
-        .form-field {
-          display: flex;
-          flex-direction: column;
-          gap: 0.5rem;
-          flex: 1;
-          min-width: 200px;
-
-          label {
-            font-weight: 500;
-            font-size: 0.9rem;
-          }
-
-          input {
-            padding: 0.6rem;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            &.error {
-              border-color: #dc3545;
-            }
-          }
-
-          .error-msg {
-            color: #dc3545;
-            font-size: 0.8rem;
-          }
-        }
-
-        button {
-          padding: 0.6rem 1.2rem;
-          background-color: #007bff;
-          color: white;
-          border: none;
-          border-radius: 4px;
-          cursor: pointer;
-          font-weight: 500;
-          height: 40px;
-
-          &:disabled {
-            background-color: #ccc;
-            cursor: not-allowed;
-          }
-          &:hover:not(:disabled) {
-            background-color: #0056b3;
-          }
-        }
-      }
-
-      .category-list {
-        h3 {
-          font-size: 1.1rem;
-          margin-bottom: 0.8rem;
-          border-bottom: 1px solid #eee;
-          padding-bottom: 0.5rem;
-        }
-        ul {
-          list-style: none;
-          padding: 0;
-        }
-        li {
-          padding: 0.5rem 0;
-          border-bottom: 1px solid #f9f9f9;
-          display: flex;
-          justify-content: space-between;
-          .count {
-            color: #666;
-            font-size: 0.9rem;
-          }
-        }
-      }
-    `,
-  ],
+  styleUrl: './category-manager.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CategoryManagerComponent implements OnInit {
   categoryService = inject(CategoryService);
   private fb = inject(FormBuilder);
+  categoryAdded = output<void>();
 
   categoryForm = this.fb.nonNullable.group({
     name: ['', [Validators.required, Validators.minLength(2)]],
@@ -156,6 +64,7 @@ export class CategoryManagerComponent implements OnInit {
     if (this.categoryForm.valid) {
       this.categoryService.createCategory(this.categoryForm.getRawValue()).subscribe(() => {
         this.categoryForm.reset();
+        this.categoryAdded.emit();
       });
     }
   }
