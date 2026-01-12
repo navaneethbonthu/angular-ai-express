@@ -26,13 +26,14 @@ import { Component, ElementRef, viewChild } from '@angular/core';
       max-width: 600px;
       width: 90%;
       box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+      height: 100%
       
-      &::backdrop {
-        background: rgba(0, 0, 0, 0.5);
-        backdrop-filter: blur(2px);
-      }
+      
     }
-
+    dialog::backdrop {
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(2px);
+    }
     .modal-content {
       padding: 0;
     }
@@ -41,7 +42,7 @@ import { Component, ElementRef, viewChild } from '@angular/core';
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 1.5rem;
+      padding: 8px 16px;
       border-bottom: 1px solid #eee;
 
       .close-btn {
