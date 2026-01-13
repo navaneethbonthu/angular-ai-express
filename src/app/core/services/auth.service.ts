@@ -15,7 +15,7 @@ export class AuthService {
 
   // 1. Reactive State (Signals)
   // We initialize the token from localStorage so login persists on refresh
-  currentUser = signal<User | null>(null);
+  currentUser = signal<User | null>(this.getUserFromStorage());
 
   token = signal<string | null>(localStorage.getItem('token'));
 
@@ -42,17 +42,30 @@ export class AuthService {
   }
 
   // 5. Logout Method
-  logout() {
-    localStorage.removeItem('token');
-    this.token.set(null);
-    this.currentUser.set(null);
-    this.router.navigate(['/login']);
-  }
 
   // Helper logic to update state
   private setSession(authResponse: AuthResponse) {
     localStorage.setItem('token', authResponse.token);
     this.token.set(authResponse.token);
     this.currentUser.set(authResponse.user);
+    localStorage.setItem('user', JSON.stringify(authResponse.user));
+  }
+
+  private getUserFromStorage(): User | null {
+    const userStr = localStorage.getItem('user');
+    if (!userStr) return null;
+    try {
+      return JSON.parse(userStr);
+    } catch {
+      return null;
+    }
+  }
+
+  logout() {
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
+    this.token.set(null);
+    this.currentUser.set(null);
+    this.router.navigate(['/login']);
   }
 }

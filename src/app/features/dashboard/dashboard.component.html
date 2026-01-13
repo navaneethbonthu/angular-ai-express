@@ -1,1 +1,24 @@
-<p>dashboard works!</p>
+<div class="dashboard-container">
+    <header class="dashboard-header">
+        <h1>Welcome back, {{ user()?.name }}!</h1>
+        <p class="subtitle">Manage your products and categories from here.</p>
+    </header>
+
+    <div class="stats-grid">
+        <div class="stat-card">
+            <h3>Quick Actions</h3>
+            <div class="actions">
+                <a routerLink="/products" class="btn btn-primary">Manage Products</a>
+                <a routerLink="/categories" class="btn btn-secondary">Manage Categories</a>
+            </div>
+        </div>
+
+        <div class="stat-card profile-summary">
+            <h3>Profile Summary</h3>
+            <div class="profile-details">
+                <p><strong>Name:</strong> {{ user()?.name }}</p>
+                <p><strong>Email:</strong> {{ user()?.email }}</p>
+            </div>
+        </div>
+    </div>
+</div>

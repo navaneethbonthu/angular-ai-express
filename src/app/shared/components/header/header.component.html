@@ -1,18 +1,28 @@
 <header class="header">
     <div class="container">
         <div class="logo">
-            <a routerLink="/">My App</a>
+            <a routerLink="/dashboard" class="logo-link">AI Express</a>
         </div>
         <nav class="navigation">
-            <ul>
+            <ul class="nav-list">
                 @if (loggedInUser()) {
-                <li><a routerLink="/dashboard">Dashboard</a></li>
-                <li>Welcome, {{ loggedInUser()?.email }}</li>
-                <li>
-                    <button (click)="logout()">Logout</button>
+                <li class="nav-item">
+                    <a routerLink="/dashboard" class="nav-link" routerLinkActive="active">Dashboard</a>
+                </li>
+                <li class="nav-item">
+                    <a routerLink="/products" class="nav-link" routerLinkActive="active">Products</a>
+                </li>
+                <li class="nav-item">
+                    <a routerLink="/categories" class="nav-link" routerLinkActive="active">Categories</a>
+                </li>
+                <li class="nav-item user-info">
+                    <span class="welcome-text">Welcome, {{ loggedInUser()?.name }}</span>
+                    <button (click)="logout()" class="logout-btn">Logout</button>
                 </li>
                 } @else {
-                <li><a routerLink="/login">Login</a></li>
+                <li class="nav-item">
+                    <a routerLink="/login" class="nav-link" routerLinkActive="active">Login</a>
+                </li>
                 }
             </ul>
         </nav>
