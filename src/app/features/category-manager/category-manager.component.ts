@@ -47,7 +47,7 @@ import { CategoryService } from '../../core/services/category.service';
   styleUrl: './category-manager.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class CategoryManagerComponent implements OnInit {
+export default class CategoryManagerComponent implements OnInit {
   categoryService = inject(CategoryService);
   private fb = inject(FormBuilder);
   categoryAdded = output<void>();

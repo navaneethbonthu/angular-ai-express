@@ -13,9 +13,9 @@ import { ProductService } from '../../core/services/product.service';
 import { Product } from '../../models/api.models';
 import { debounceTime, distinctUntilChanged } from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { CategoryManagerComponent } from '../category-manager/category-manager.component';
 import { ProductFormComponent } from './product-form.component';
 import { ModalComponent } from '../../shared/components/modal/modal.component';
+import CategoryManagerComponent from '../category-manager/category-manager.component';
 
 @Component({
   selector: 'app-product-list',
@@ -23,9 +23,9 @@ import { ModalComponent } from '../../shared/components/modal/modal.component';
   imports: [
     ProductCardComponent,
     ReactiveFormsModule,
-    CategoryManagerComponent,
     ProductFormComponent,
     ModalComponent,
+    CategoryManagerComponent,
   ],
   templateUrl: './product-list.html',
   styleUrl: './product-list.scss',

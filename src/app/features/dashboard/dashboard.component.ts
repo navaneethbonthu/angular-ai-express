@@ -10,7 +10,7 @@ import { AuthService } from '../../core/services/auth.service';
   styleUrl: './dashboard.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class DashboardComponent {
+export default class DashboardComponent {
   private authService = inject(AuthService);
   user = computed(() => this.authService.currentUser());
 }

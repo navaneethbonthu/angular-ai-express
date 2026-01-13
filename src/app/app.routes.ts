@@ -9,8 +9,7 @@ export const routes: Routes = [
   {
     path: 'dashboard',
     canActivate: [authGuard],
-    loadComponent: () =>
-      import('./features/dashboard/dashboard.component').then((m) => m.DashboardComponent),
+    loadComponent: () => import('./features/dashboard/dashboard.component'),
   },
   {
     path: 'products',
@@ -20,10 +19,7 @@ export const routes: Routes = [
   {
     path: 'categories',
     canActivate: [authGuard],
-    loadComponent: () =>
-      import('./features/category-manager/category-manager.component').then(
-        (m) => m.CategoryManagerComponent
-      ),
+    loadComponent: () => import('./features/category-manager/category-manager.component'),
   },
   { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
   { path: '**', redirectTo: 'dashboard' },
