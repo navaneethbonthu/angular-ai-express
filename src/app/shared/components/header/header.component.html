@@ -1,0 +1,20 @@
+<header class="header">
+    <div class="container">
+        <div class="logo">
+            <a routerLink="/">My App</a>
+        </div>
+        <nav class="navigation">
+            <ul>
+                @if (loggedInUser()) {
+                <li><a routerLink="/dashboard">Dashboard</a></li>
+                <li>Welcome, {{ loggedInUser()?.email }}</li>
+                <li>
+                    <button (click)="logout()">Logout</button>
+                </li>
+                } @else {
+                <li><a routerLink="/login">Login</a></li>
+                }
+            </ul>
+        </nav>
+    </div>
+</header>

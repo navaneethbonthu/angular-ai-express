@@ -16,6 +16,7 @@ export class AuthService {
   // 1. Reactive State (Signals)
   // We initialize the token from localStorage so login persists on refresh
   currentUser = signal<User | null>(null);
+
   token = signal<string | null>(localStorage.getItem('token'));
 
   // 2. Computed State
