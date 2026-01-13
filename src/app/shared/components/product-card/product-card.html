@@ -9,8 +9,8 @@
     </div>
     <div class="content">
         <span class="category">{{ product().category?.name || 'Uncategorized' }}</span>
-        <h3 class="product-name">{{ product().name }}</h3>
-        <p class="description">{{ product().description }}</p>
+        <h3 class="product-name">{{ product().name || 'Not avialable'}}</h3>
+        <p class="description">{{ product().description || 'Not avialable'}}</p>
         <div class="footer">
             <span class="price">{{ product().price | currency }}</span>
             <button class="add-to-cart-btn" (click)="$event.stopPropagation(); addToCart.emit(product())"

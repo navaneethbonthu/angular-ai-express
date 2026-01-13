@@ -12,7 +12,7 @@ import { Component, ElementRef, viewChild } from '@angular/core';
             ×
           </button>
         </header>
-        <main class="modal-body">
+        <main class="modal-body">   
           <ng-content></ng-content>
         </main>
       </div>
