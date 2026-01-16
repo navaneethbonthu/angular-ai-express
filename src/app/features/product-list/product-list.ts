@@ -10,6 +10,8 @@ import {
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { ProductCardComponent } from '../../shared/components/product-card/product-card';
 import { ProductService } from '../../core/services/product.service';
+import { AuthService } from '../../core/services/auth.service';
+import { CartService } from '../../core/services/cart.service';
 import { Product } from '../../models/api.models';
 import { debounceTime, distinctUntilChanged } from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
@@ -33,6 +35,11 @@ import CategoryManagerComponent from '../category-manager/category-manager.compo
 })
 export default class ProductListComponent implements OnInit {
   productService = inject(ProductService);
+  private authService = inject(AuthService);
+  private cartService = inject(CartService);
+
+  isAdmin = this.authService.isAdmin;
+
   productModal = viewChild<ModalComponent>('productModal');
   categoryModal = viewChild<ModalComponent>('categoryModal');
 
@@ -71,8 +78,7 @@ export default class ProductListComponent implements OnInit {
   }
 
   handleAddToCart(product: Product) {
-    console.log('Adding to cart:', product.name);
-    // TODO: Implement cart service logic here
+    this.cartService.addToCart(product);
   }
 
   handleDeleteProduct(id: string) {

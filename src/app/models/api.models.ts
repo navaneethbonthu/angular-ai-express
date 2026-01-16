@@ -1,8 +1,14 @@
+export enum UserRole {
+  CUSTOMER = 'CUSTOMER',
+  ADMIN = 'ADMIN',
+}
+
 // 1. User Model
 export interface User {
   id: string;
   name: string;
   email: string;
+  role: UserRole;
 }
 
 // 2. Category Model (Matches your Prisma Category table)

@@ -6,10 +6,12 @@
 
     <!-- Search and Controls Area -->
     <div class="controls-bar">
+        @if (isAdmin()) {
         <div class="actions-group">
             <button class="action-btn primary" (click)="openProductModal()">+ Add Product</button>
             <button class="action-btn secondary" (click)="openCategoryModal()">Manage Categories</button>
         </div>
+        }
         <div class="search-and-filter">
             <!-- Search -->
             <label for="search-input" class="visually-hidden">Search products by name or description</label>

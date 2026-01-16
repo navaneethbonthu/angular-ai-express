@@ -16,6 +16,7 @@ export class HeaderComponent {
   private router = inject(Router);
 
   loggedInUser = computed(() => this.authService.currentUser());
+  isAdmin = computed(() => this.authService.isAdmin());
 
   logout(): void {
     this.authService.logout();

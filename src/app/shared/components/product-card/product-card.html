@@ -13,14 +13,17 @@
         <p class="description">{{ product().description || 'Not avialable'}}</p>
         <div class="footer">
             <span class="price">{{ product().price | currency }}</span>
+            @if (!isAdmin()) {
             <button class="add-to-cart-btn" (click)="$event.stopPropagation(); addToCart.emit(product())"
                 aria-label="Add to cart">
                 Add to Cart
             </button>
+            } @else {
             <button class="delete-btn" (click)="$event.stopPropagation(); delete.emit(product().id)"
                 aria-label="Delete product">
                 Delete
             </button>
+            }
         </div>
     </div>
 </div>

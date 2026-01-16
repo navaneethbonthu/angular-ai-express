@@ -8,8 +8,15 @@
         <div class="stat-card">
             <h3>Quick Actions</h3>
             <div class="actions">
-                <a routerLink="/products" class="btn btn-primary">Manage Products</a>
-                <a routerLink="/categories" class="btn btn-secondary">Manage Categories</a>
+                @if (isAdmin()) {
+                <a routerLink="/admin" class="btn btn-primary">Go to Admin Panel</a>
+                }
+                <a routerLink="/products" class="btn btn-secondary">View Products</a>
+                @if (!isAdmin()) {
+                <button class="btn btn-primary" (click)="placeOrder()" [disabled]="cartCount() === 0">
+                    Place Order ({{ cartCount() }})
+                </button>
+                }
             </div>
         </div>
 

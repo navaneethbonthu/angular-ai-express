@@ -2,7 +2,7 @@ import { Injectable, signal, inject, computed } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { tap } from 'rxjs';
-import { AuthResponse, User } from '../../models/api.models';
+import { AuthResponse, User, UserRole } from '../../models/api.models';
 import { environment } from '../../../environments/environment';
 
 @Injectable({
@@ -22,6 +22,8 @@ export class AuthService {
   // 2. Computed State
   // This automatically becomes 'true' if token has a value
   isAuthenticated = computed(() => !!this.token());
+
+  isAdmin = computed(() => this.currentUser()?.role === UserRole.ADMIN);
 
   // 3. Login Method
   login(credentials: { email: string; password: string }) {
@@ -55,7 +57,14 @@ export class AuthService {
     const userStr = localStorage.getItem('user');
     if (!userStr) return null;
     try {
-      return JSON.parse(userStr);
+      // The user object from storage now needs the UserRole definition
+      const user = JSON.parse(userStr);
+      // Ensure the role is present (useful for older tokens or initial state)
+      if (!user.role) {
+        // Default to CUSTOMER if role is missing, assuming no unauthenticated admin
+        user.role = UserRole.CUSTOMER;
+      }
+      return user;
     } catch {
       return null;
     }
